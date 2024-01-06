@@ -1,25 +1,33 @@
-import ADD_STUDENTS from "../constants/type"
+import { ADD_STUDENTS, DELETE_STUDENTS, FETCH_STUDENTS } from "../constants/type"
 let initialState = {
-    name: "AbdulRehman",
-    batch: "Batch2",
-    rollNo: "2333",
-    email: "AbdulRehman@gmail.com"
-}
+    error: '',
+    students: [],
+};
 
 function StudentsReducer(state = initialState, action) {
     switch (action.type) {
         case ADD_STUDENTS:
-            console.log("Data in Reducer ",action.payload)
-            // logic are here
-            let newstate = {
+            let newStudent = state.students
+            newStudent.push(action.payload)
+            // console.log("newStudent in reducer", newStudent)
+            return {
                 ...state,
-                name: "Ali",
-                batch: "Batch3",
-                rollNo: "2333",
-                email: "AbdulRehmanAli@gmail.com",
-                newData: action.payload
+                students: newStudent
             }
-            return newstate
+
+        case FETCH_STUDENTS:
+            // console.log("Data Fetching in Reducer", action.payload)
+            return {
+                ...state,
+                students: action.payload
+            }
+        case DELETE_STUDENTS:
+            let deletedStudent = state.students.filter((item) => item.docID !== action.payload);
+            return {
+                ...state,
+                students: deletedStudent
+            }
+
 
         default:
             return state
