@@ -7,6 +7,7 @@ import {
     ADD_STUDENTS,
     DELETE_STUDENTS,
     FETCH_STUDENTS,
+    UPDATE_STUDENTS,
 } from "../constants/type";
 
 // ADD students
@@ -26,8 +27,24 @@ const addStudents = (data) => async (dispatch, previouState) => {
         message.error("Error in Action Add student")
     }
 }
+// UPDATE students
 
-// ADD students
+const updateStudents = (docID, data) => async (dispatch, previouState) => {
+
+    try {
+        await setDoc(doc(firestore, "students", docID), data);
+
+        dispatch({
+            type: UPDATE_STUDENTS,
+            payload: { docID, data },
+        });
+    } catch (error) {
+        // console.log("Error While add student in Action", error)
+        message.error("Error in Action Add student")
+    }
+}
+
+// Fetch students
 
 const getStudents = (setLoading) => async (dispatch, prevState) => {
     try {
@@ -50,6 +67,7 @@ const getStudents = (setLoading) => async (dispatch, prevState) => {
         message.error("Error in Action get student");
     } finally {
         setLoading(false);
+        
     }
 };
 
@@ -74,4 +92,4 @@ const deleteStudents = (docID) => async (dispatch, previouState) => {
 
 
 
-export { addStudents, getStudents, deleteStudents }
+export { addStudents, getStudents, deleteStudents, updateStudents }

@@ -1,4 +1,4 @@
-import { ADD_STUDENTS, DELETE_STUDENTS, FETCH_STUDENTS } from "../constants/type"
+import { ADD_STUDENTS, DELETE_STUDENTS, FETCH_STUDENTS, UPDATE_STUDENTS } from "../constants/type"
 let initialState = {
     error: '',
     students: [],
@@ -27,6 +27,22 @@ function StudentsReducer(state = initialState, action) {
                 ...state,
                 students: deletedStudent
             }
+        case UPDATE_STUDENTS:
+            console.log("data in reducer from action", action.payload);
+            // work  / logic will be here
+            let updatedStudents = state.students.map((item) => {
+                if (action.payload.docID === item.docID) {
+                    return { ...action.payload.data, ...action.payload.docID }
+                }
+                else {
+                    return item
+                }
+            })
+            return {
+                ...state,
+                students: updatedStudents
+            };
+
 
 
         default:

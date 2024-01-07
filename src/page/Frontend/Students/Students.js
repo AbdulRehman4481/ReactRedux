@@ -7,55 +7,58 @@ import { DeleteOutlined, EditOutlined, UserOutlined } from "@ant-design/icons"
 
 export default function Students() {
 
-  const { student, loading, handleChange, handleSubmit, form, handleDelete } = useStudents()
+  const { student,students, loading, setData, handleEdit, handleChange, handleSubmit, flag,  handleDelete } = useStudents()
   // console.log("student", student)
+
+  
   return (
     <>
       <div className="container">
         <div className="row">
           <div className="col py-3">
-            <Form onFinish={handleSubmit} form={form} style={{ border: "1px solid black", borderRadius: "10px", padding: "30px 30px", margin: "10px 10px" }}>
+            <Form  style={{ border: "1px solid black", borderRadius: "10px", padding: "30px 30px", margin: "10px 10px" }}>
               <Row>
                 <Col span={8} offset={10} >
                   <h1 > Add Students</h1>
                 </Col>
               </Row>
+              
               <Row gutter={40} >
                 <Col span={12}>
                   <Form.Item>
-                    <Input type='text' placeholder='Name' name='fullName' onChange={handleChange} className="form-control" />
+                    <input type='text' value={students.fullName || ""}  placeholder='Name' name='fullName' onChange={handleChange} className="form-control" />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
                   <Form.Item>
-                    <Input type='text' placeholder='Batch' name='batch' onChange={handleChange} className="form-control" />
+                    <input type='text' value={students.batch || ""}  placeholder='Batch' name='batch' onChange={handleChange} className="form-control" />
                   </Form.Item>
                 </Col>
               </Row>
               <Row gutter={40} >
                 <Col span={12}>
                   <Form.Item>
-                    <Input type='number' placeholder='Roll No:' name='rollNo' onChange={handleChange} className="form-control" />
+                    <input type='number' value={students.rollNo || ""} placeholder='Roll No:' name='rollNo' onChange={handleChange} className="form-control" />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
                   <Form.Item>
-                    <Input type='email' placeholder='Email' name='email' onChange={handleChange} className="form-control" />
+                    <input type='email' value={students.email || ""} placeholder='Email' name='email' onChange={handleChange} className="form-control" />
                   </Form.Item>
                 </Col>
               </Row>
               <Row className=' text-center'>
                 <Col span={24}>
-                  <button onClick={handleSubmit} style={{
-                    border: "1px solid blue",
-                    borderRadius: "10px",
-                    padding: "8px",
-                    color: "white",
-                    backgroundColor: "blue",
 
-                  }}>
-                    ADD STUDENTS
-                  </button>
+                  {flag ?
+
+                    <button onClick={handleEdit} style={{ border: "1px solid blue", borderRadius: "10px", padding: "8px", color: "white", backgroundColor: "blue", }}>update</button>
+                    :
+                    <button onClick={handleSubmit} style={{ border: "1px solid blue", borderRadius: "10px", padding: "8px", color: "white", backgroundColor: "blue", }}>
+                      ADD STUDENTS
+                    </button>
+                  }
+
                 </Col>
               </Row>
             </Form>
@@ -79,21 +82,19 @@ export default function Students() {
                   {
                     student ?
                       <>
-                        {student.map((item, i) => {
+                        {student.map((doc, i) => {
                           return (
                             <tr key={i}>
                               <td>{i + 1}</td>
-                              <td>{item.fullName}</td>
-                              <td>{item.batch}</td>
-                              <td>{item.rollNo}</td>
-                              <td>{item.email}</td>
+                              <td>{doc.fullName}</td>
+                              <td>{doc.batch}</td>
+                              <td>{doc.rollNo}</td>
+                              <td>{doc.email}</td>
                               <td>
                                 <Space>
-                                  <Tooltip title="Delete" color='red'><Button onClick={() => { handleDelete(item.docID) }} danger icon={<DeleteOutlined />} /></Tooltip>
-                                  <Tooltip title="Edit"><Button type="primary" icon={<EditOutlined />} /></Tooltip>
+                                  <Tooltip title="Delete" color='red'><Button onClick={() => { handleDelete(doc.docID) }} danger icon={<DeleteOutlined />} /></Tooltip>
+                                  <Tooltip title="Edit"><Button type="primary" icon={<EditOutlined />} onClick={() => {setData(doc)}} /></Tooltip>
                                 </Space>
-                                {/* onClick={() => { navigate(`/dashboard/todos/${todo.id}`) }} */}
-                                {/* onClick={() => { handleDelete(todo) }}  */}
                               </td>
                             </tr>
                           )
@@ -111,8 +112,6 @@ export default function Students() {
                         </td>
                       </tr>
                   }
-
-
                 </>
               </tbody>
             </table>
